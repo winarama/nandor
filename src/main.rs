@@ -5,7 +5,7 @@ use std::env;
 use std::fs;
 use std::fs::File;
 use colored::Colorize;
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::io::{BufRead, BufReader, LineWriter};
 
 static CYAN_BOLD_BRIGHT: &str = "\x1b33[1;96m";
@@ -43,15 +43,9 @@ fn main() {
 }
 
 fn generate_log_output(service: &str) {
-    Command::new("journalctl")
-        .arg("-n")
-        .arg("1000")
-        .arg("-u")
-        .arg(service)
-        .arg(">")
-        .arg("log.out")
-        .spawn()
-        .expect("Nandor: Oh no, I releneted.");
+    let log_out = File::create("log.out").unwrap();
+    let mut child = Command::new("journalctl").arg("-n").arg("1000").arg("-u") .arg(service).stdout(log_out).spawn().expect("Nandor: Oh no, I releneted.");
+    let _res = child.wait().unwrap();
 }
 
 fn parse_line(line: &str) -> Option<Vec<String>> {
@@ -81,22 +75,10 @@ fn is_script_kiddie(log_entry: &str) -> bool {
 }
 
 fn block_script_kiddie(ip: &str) {
-    Command::new("iptables")
-        .arg("-A")
-        .arg("INPUT")
-        .arg("-s")
-        .arg(ip)
-        .arg("-j")
-        .arg("DROP")
-        .spawn()
-        .expect("Nandor: Oh no, I releneted.");
-
-    Command::new("iptables-save")
-        .arg("&>/dev/null")
-        .spawn()
-        .expect("Nandor: Oh no, I releneted.");
+    Command::new("iptables").arg("-A").arg("INPUT").arg("-s").arg(ip).arg("-j").arg("DROP").spawn().expect("Nandor: Oh no, I releneted.");
 }
 
 fn clean_up() {
+    Command::new("iptables-save").stdout(std::process::Stdio::null()).stderr(std::process::Stdio::null()).spawn().expect("Nandor: Oh no, I releneted.");
     fs::remove_file("log.out").unwrap();
 }
