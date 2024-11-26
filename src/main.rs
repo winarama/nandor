@@ -8,10 +8,6 @@ use colored::Colorize;
 use std::process::{Command, Stdio};
 use std::io::{BufRead, BufReader, LineWriter};
 
-static CYAN_BOLD_BRIGHT: &str = "\x1b33[1;96m";
-static GREEN_BOLD_BRIGHT: &str = "\x1b33[1;92m";
-static RESET: &str = "\x1b33[0m";
-
 fn main() {
     println!("{} {}", "Nandor:".cyan(), "I am Nandor the Relentless! I must protect the borders of Al Qolnidar!".green());    
     let args: Vec<String> = env::args().collect();
