@@ -71,7 +71,7 @@ fn is_script_kiddie(log_entry: &str) -> bool {
 }
 
 fn block_script_kiddie(ip: &str) {
-    Command::new("iptables").arg("-A").arg("INPUT").arg("-s").arg(ip).arg("-j").arg("DROP").spawn().expect("Nandor: Oh no, I releneted.");
+    let mut child = Command::new("iptables").arg("-A").arg("INPUT").arg("-s").arg(ip).arg("-j").arg("DROP").spawn().expect("Nandor: Oh no, I releneted.");
     let _res = child.wait().unwrap();
 }
 
