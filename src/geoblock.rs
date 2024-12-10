@@ -1,7 +1,8 @@
-#![allow(unused_imports)]
 #![allow(dead_code)]
 
+use std::io;
 use std::env;
+use std::io::Write;
 use std::error::Error;
 use colored::Colorize;
 use std::process::{Command, Stdio};
@@ -15,12 +16,20 @@ pub fn run(country_codes: Vec<String>) {
         let res = fetch_ip_block(country).unwrap();
         let blocks = res.split("\n");
         for block in blocks {
+            print!("{} {} {}", "Nandor:".cyan(), "Attempting to block >>".green(), block.red());
+            io::stdout().flush().unwrap();
             if update_firewall_rules(&block) {
-                println!("{} {} {}", "Nandor:".cyan(), "I have blocked >>".green(), block.red());
+                print!(" {}\n", "Success!".green());
+                io::stdout().flush().unwrap();
+            } else {
+                print!(" {}\n", "Failure!".red());
+                io::stdout().flush().unwrap();
             }
         }
         if reload_firewall() {
-            println!("{} {} {}", "Nandor:".cyan(), "I have blocked all of >>".green(), country.to_uppercase().red());
+            println!("{} {} {} {}", "Nandor:".cyan(), "I have reloaded the firewall. All of >>".green(), country.to_uppercase().red(), "has been blocked.".green());
+        } else {
+            println!("{} {} {} {}", "Nandor:".cyan(), "I have failed to reloaded the firewall. All of >>".red(), country.to_uppercase().green(), "has not been blocked.".red());
         }
     }
 }
@@ -35,21 +44,21 @@ pub fn run(country_codes: Vec<String>) {
  *  ufw reload   
  */
 fn update_firewall_rules(cidr: &str) -> bool {
-    let status = Command::new("ufw")
+    let output = Command::new("ufw")
     .arg("deny")
     .arg("from")
     .arg(cidr)
-    .status()
+    .output()
     .expect("Nandor: Oh no, I releneted.");
-    return status.success()
+    return output.status.success()
 }
 
 fn reload_firewall() -> bool {
-    let status = Command::new("ufw")
+    let output = Command::new("ufw")
     .arg("reload")
-    .status()
+    .output()
     .expect("Nandor: Oh no, I releneted.");
-    return status.success()
+    return output.status.success()
 }
 
 fn fetch_ip_block(code: &str) -> Result<String, Box<dyn Error>> {

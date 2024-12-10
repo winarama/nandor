@@ -1,7 +1,7 @@
 # nandor
 ![alt text](https://winarama.one/img/nandor.png)
 
-Nandor is a relentless utility application that scans the log files of a given service for script-kiddie network requests and blocks associated IP addresses. Nandor has two modes of operation, **geoblock** and **logscan**.
+Nandor is a relentless utility application that blocks IP addresses of would-be marauders who threaten the borders of your digital kingdom. Nandor has two modes of operation, **geoblock** and **logscan**.
 
 ## geoblock
 geoblock blocks all IP addresses associated with a given country.<br>  
