@@ -14,6 +14,7 @@ logscan scans service logs for script-kiddie requests and blocks associated IP a
 `nandor <service-name>`
 `Example: nandor coolio`
 
+##
 Currently works on Ubuntu Server (with plans for Rocky Linux in 2025). 
 
 Powered by **Rust** 🦀
