@@ -17,21 +17,21 @@ pub fn run(country_codes: Vec<String>) {
         let blocks = res.split("\n");
         for block in blocks {
             if block.len() > 0 {
-                print!("{} {} {} {}", "Nandor:".cyan(), "Attempting to block".green(), block.red(), ">>".cyan());
+                print!("{} {} {} {}", "Nandor:".cyan(), "Attempting to block".green(), block.red(), ">>".green());
                 io::stdout().flush().unwrap();
                 if update_firewall_rules(&block) {
-                    print!(" {}\n", "Success!".green());
+                    print!(" {}\n", "success.".green());
                     io::stdout().flush().unwrap();
                 } else {
-                    print!(" {}\n", "Failure!".red());
+                    print!(" {}\n", "failure.".red());
                     io::stdout().flush().unwrap();
                 }
             }
         }
         if reload_firewall() {
-            println!("{} {} {} {}", "Nandor:".cyan(), "Firewall successfully reloaded. All of ".green(), country.to_uppercase().red(), "has been blocked.".green());
+            println!("{} {} {} {}", "Nandor:".cyan(), "Firewall successfully reloaded. All of".green(), country.to_uppercase().red(), "has been blocked.".green());
         } else {
-            println!("{} {} {} {}", "Nandor:".cyan(), "Firewall not reloaded. All of ".red(), country.to_uppercase().red(), "has not been blocked.".red());
+            println!("{} {} {} {}", "Nandor:".cyan(), "Firewall not reloaded. All of".red(), country.to_uppercase().red(), "has not been blocked.".red());
         }
     }
 }
