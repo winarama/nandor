@@ -20,10 +20,10 @@ pub fn run(country_codes: Vec<String>) {
                 print!("{} {} {} {}", "Nandor:".cyan(), "Attempting to block".green(), block.red(), ">>".green());
                 io::stdout().flush().unwrap();
                 if update_firewall_rules(&block) {
-                    print!(" {}\n", "success.".green());
+                    print!(" {}\n", "success".green());
                     io::stdout().flush().unwrap();
                 } else {
-                    print!(" {}\n", "failure.".red());
+                    print!(" {}\n", "failure".red());
                     io::stdout().flush().unwrap();
                 }
             }
